@@ -1,0 +1,62 @@
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    /* Full viewport height to center vertically */
+}
+
+.formContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    /* Space between form elements */
+    padding: 20px;
+}
+
+.formRow {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+label {
+    margin-right: 25px;
+    width: 150px;
+    text-align: right;
+    font-weight: 600;
+}
+
+input {
+    flex: 1;
+    padding: 6px 10px;
+    width: 250px;
+    border: 1px solid #ccc;
+    background-color: #F4F4F4;
+    outline: none;
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+}
+
+.error {
+    /* position: relative; */
+    color: red;
+    font-size: 12px;
+    margin-top: -10px;
+    margin-left: 190px;
+    /* left: 190px;
+    bottom: 55px; */
+}
+
+.formBtn {
+    padding: 5px 90px;
+    background-color: #A9BCFF;
+    color: #474444;
+    font-family: "Poppins", sans-serif;
+    font-size: 20px;
+    font-weight: 500;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    align-self: center;
+    margin-top: 10px;
+}

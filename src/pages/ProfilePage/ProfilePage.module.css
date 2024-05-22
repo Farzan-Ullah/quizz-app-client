@@ -1,0 +1,45 @@
+.container {
+    margin: 0;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #F2F2F2;
+}
+
+.formContainer {
+    background-color: #fff;
+    border-radius: 15px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 30px;
+    padding: 40px;
+    width: 50%;
+}
+
+.profileBtns {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.profileBtn {
+    border: none;
+    background: transparent;
+    border-radius: 10px;
+    padding: 5px 70px;
+    font-size: 20px;
+    line-height: 30px;
+    cursor: pointer;
+    transition: background-color 0.3s, box-shadow 0.3s;
+}
+
+.profileBtn.active {
+    background-color: #fff;
+    box-shadow: 4px 4px 20px rgba(24, 78, 255, 0.315);
+}
+
+.profileForm {
+    width: 100%;
+}
