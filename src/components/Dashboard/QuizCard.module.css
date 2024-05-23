@@ -1,0 +1,52 @@
+.quizCard {
+    padding: 10px;
+    border-radius: 8px;
+    width: 250px;
+    height: 80px;
+    text-align: center;
+    background-color: #fff;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding-left: 10px;
+}
+
+.quizTitle {
+    position: relative;
+    top: 10px;
+    font-weight: 600;
+    margin-left: 2px;
+    text-align: left;
+    font-size: 31px;
+}
+
+/* .quizDetails {
+} */
+
+.createdOn {
+    position: relative;
+    top: 10px;
+    right: 12px;
+    font-size: 17px;
+    font-weight: 600;
+    margin-right: 5px;
+    color: #60B84B;
+    width: 100%;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.attempts {
+    display: inline;
+    position: relative;
+    bottom: 50px;
+    left: 90px;
+    color: orange;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 6px;
+    font-size: 19px;
+    font-weight: 600;
+}

@@ -18,12 +18,6 @@ function LoginUser({ onSuccess }) {
     setFormData({ ...formData, [id]: value });
   };
 
-  // const handleChange = (e) => {
-  //   const { id, value } = e.target;
-  //   setFormData((prevFormData) => ({ ...prevFormData, [id]: value }));
-  //   console.log(formData);
-  // };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     const { email, password } = formData;
@@ -38,7 +32,7 @@ function LoginUser({ onSuccess }) {
       if (response) {
         toast.success("Login Successfull");
         setTimeout(() => {
-          navigate("/dashboard"); // Navigate to /dashboard after 2 seconds
+          navigate("/dashboard");
         }, 1000);
       } else {
         toast.error("Invalid email or password");
@@ -61,9 +55,6 @@ function LoginUser({ onSuccess }) {
     if (!password) {
       errors.password = "invalid password";
     }
-    //  else if (password.length < 4) {
-    //   errors.password = "Weak Password";
-    // }
     return errors;
   };
 
