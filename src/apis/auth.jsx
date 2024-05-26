@@ -1,6 +1,7 @@
 import axios from "axios";
 
-const banckendUrl = `https://quizzie-app-service.onrender.com/api`;
+// const banckendUrl = `https://quizzie-app-service.onrender.com/api`;
+const banckendUrl = `http://localhost:3001/api`;
 
 export const registerUser = async ({
   username,

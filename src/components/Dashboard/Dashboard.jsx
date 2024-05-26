@@ -3,11 +3,14 @@ import { useNavigate } from "react-router-dom";
 import styles from "./Dashboard.module.css";
 import StatCard from "./StatCard";
 import QuizCard from "./QuizCard";
+import Modal from "../CreateQuiz/Modal";
+import CreateQuizForm from "../CreateQuiz/CreateQuizForm";
 
 function Dashboard() {
   const navigate = useNavigate();
 
   const [activeSection, setActiveSection] = useState("Dashboard");
+  const [isModalOpen, setModalOpen] = useState(false);
 
   const quizzes = Array(50).fill({
     title: "Quiz 1",
@@ -47,7 +50,7 @@ function Dashboard() {
             className={`${styles.navBtn} ${
               activeSection === "Create Quiz" ? styles.active : ""
             }`}
-            onClick={() => setActiveSection("Create Quiz")}
+            onClick={() => setModalOpen(true)}
           >
             Create Quiz
           </button>
@@ -79,13 +82,10 @@ function Dashboard() {
             <h2>Analytics Content</h2>
           </div>
         )}
-        {activeSection === "Create Quiz" && (
-          <div>
-            {/* Replace this with your Create Quiz component/content */}
-            <h2>Create Quiz Content</h2>
-          </div>
-        )}
       </div>
+      <Modal isOpen={isModalOpen} onClose={() => setModalOpen(false)}>
+        <CreateQuizForm onClose={() => setModalOpen(false)} />
+      </Modal>
     </div>
   );
 }
