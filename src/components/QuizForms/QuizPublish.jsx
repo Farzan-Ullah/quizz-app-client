@@ -4,7 +4,10 @@ import { ToastContainer, toast, Slide } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 // import { getQuizDetails } from "../../apis/quiz";
 function QuizPublish({ quizId, onClose }) {
-  const quizLink = `${window.location.origin}/quiz-test/${localStorage.getItem("createdQuizId")}`;
+  const quizLink =
+    window.location.origin +
+    "/quiz-test/" +
+    localStorage.getItem("createdQuizId");
   // const [isCopying, setIsCopying] = useState(false);
   // const [quizLink, setQuizLink] = useState("");
 
