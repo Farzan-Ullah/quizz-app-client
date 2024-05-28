@@ -1,7 +1,7 @@
 import axios from "axios";
 
-const backendUrl = `https://quizzie-app-service.onrender.com/api`;
-// const banckendUrl = `http://localhost:3001/api`;
+// const backendUrl = `https://quizzie-app-service.onrender.com/api`;
+const backendUrl = `http://localhost:3001/api`;
 
 export const registerUser = async ({
   username,
@@ -32,6 +32,18 @@ export const loginUser = async ({ email, password }) => {
     });
     localStorage.setItem("token", response.data.token);
     localStorage.setItem("username", response.data.name);
+    return response.data;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const getUserStats = async (userId) => {
+  try {
+    const reqUrl = `${backendUrl}/userauth/stats/${userId}`;
+    const token = localStorage.getItem("token");
+    axios.defaults.headers.common["Authorization"] = token;
+    const response = await axios.get(reqUrl);
     return response.data;
   } catch (error) {
     console.log(error);

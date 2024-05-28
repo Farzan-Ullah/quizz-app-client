@@ -2,6 +2,7 @@ import "./App.css";
 import { Routes, Route, BrowserRouter } from "react-router-dom";
 import ProfilePage from "./pages/ProfilePage/ProfilePage";
 import DashboardPage from "./pages/DashboardPage/DashboardPage";
+import QuizTestPage from "./pages/QuizTestPage/QuizTestPage";
 
 function App() {
   return (
@@ -9,6 +10,7 @@ function App() {
       <Routes>
         <Route path="/" element={<ProfilePage />} />
         <Route path="/dashboard" element={<DashboardPage />} />
+        <Route path="/quiz-test/:quizId" element={<QuizTestPage />} />
       </Routes>
     </BrowserRouter>
   );

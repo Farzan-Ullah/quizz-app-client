@@ -1,18 +1,33 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import styles from "./StatCard.module.css";
+import { getUserStats } from "../../apis/auth";
 
-function StatCard({ count, label }) {
+function StatCard() {
+  const [stats, setStats] = useState({ quizCreated: 0, questionsCreated: 0 });
+
+  useEffect(() => {
+    const fetchStats = async (userId) => {
+      const userStats = await getUserStats(userId);
+      setStats({
+        quizCreated: userStats.quizCreated,
+        questionsCreated: userStats.questionsCreated,
+      });
+    };
+
+    fetchStats();
+  }, []);
+
   return (
     <>
       {" "}
       <div className={styles.statCard}>
         <div className={`${styles.count} ${styles.firstCount}`}>
-          <span>12</span> quiz created
+          <span>{stats.quizCreated}</span> quiz created
         </div>
       </div>
       <div className={styles.statCard}>
         <div className={`${styles.count} ${styles.secondCount}`}>
-          <span>110</span> questions created
+          <span>{stats.questionsCreated}</span> questions created
         </div>
       </div>
       <div className={styles.statCard}>
