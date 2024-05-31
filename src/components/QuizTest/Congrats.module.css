@@ -1,0 +1,67 @@
+.congratulations {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    color: black;
+}
+
+.congoImage {
+    width: 50%;
+}
+
+.congrats {
+    font-size: 25px;
+    color: #474444;
+}
+
+.scores {
+    font-size: 28px;
+    font-weight: 600;
+    color: #474444;
+}
+
+.scores span {
+    font-size: 30px;
+    margin-left: 10px;
+    color: #60B84B;
+    font-weight: 600;
+}
+
+.pollMessage {
+    font-size: 50px;
+    font-weight: 700;
+    color: #474444;
+    width: 100%;
+}
+
+@media (max-width: 768px) {
+    .congratulations {
+       margin-top: 20px;
+       overflow: scroll;
+    }
+
+    .congrats {
+        font-size: 40px;
+        margin-bottom: 0;
+    }
+
+    .congoImage {
+        margin-top: 10px;
+        width: 100%;
+    }
+
+    .scores {
+        margin-top: 10px;
+        font-size: 40px;
+        width: 80%;
+    }
+
+    .scores span {
+        font-size: 40px;
+    }
+
+    .pollMessage {
+        font-size: 40px;
+        margin-top: 90%;
+    }
+}

@@ -172,14 +172,9 @@ function QnAForm({ onBack }) {
       };
 
       await createQuiz(quiz);
-
-      console.log("QnA Created", quiz);
       toast.success("Quiz created successfully!");
       setIsModalOpen(true);
-      const res = await getQuizDetails(localStorage.getItem("createdQuizId"));
-      console.log(res);
-      // Assuming onSubmit is a callback passed to the component
-      // to handle form submission on the parent component
+      await getQuizDetails(localStorage.getItem("createdQuizId"));
     } catch (error) {
       console.error("Error creating quiz:", error);
     }
