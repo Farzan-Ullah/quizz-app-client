@@ -4,21 +4,32 @@ import { getQuizDetails } from "../../apis/quiz";
 import Congrats from "./Congrats";
 import { useParams } from "react-router-dom";
 
-function QuizTest({ onSubmit }) {
+function QuizTest() {
   const [slides, setSlides] = useState([]);
   const [currentSlide, setCurrentSlide] = useState(0);
   const [timer, setTimer] = useState(null);
   const [timeLeft, setTimeLeft] = useState(null);
   const [quizEnded, setQuizEnded] = useState(false);
   const [score, setScore] = useState(0);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   const { quizId } = useParams();
 
   useEffect(() => {
     const fetchSlides = async () => {
-      // const quizId = localStorage.getItem("createdQuizId");
-      const data = await getQuizDetails(quizId);
-      setSlides(data.slides);
+      try {
+        const data = await getQuizDetails(quizId);
+        if (data && data.slides) {
+          setSlides(data.slides);
+        } else {
+          throw new Error("Quiz data is not valid");
+        }
+      } catch (error) {
+        setError("Failed to fetch quiz details");
+      } finally {
+        setLoading(false);
+      }
     };
 
     fetchSlides();
@@ -56,7 +67,7 @@ function QuizTest({ onSubmit }) {
         clearInterval(timer);
       }
     };
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentSlide, slides]);
 
   const handleNextSlide = () => {
@@ -80,8 +91,16 @@ function QuizTest({ onSubmit }) {
     setQuizEnded(true);
   };
 
-  if (!slides || slides.length === 0) {
+  if (loading) {
     return <div>Loading...</div>;
+  }
+
+  if (error) {
+    return <div>{error}</div>;
+  }
+
+  if (!slides || slides.length === 0) {
+    return <div>No quiz available</div>;
   }
 
   if (quizEnded) {

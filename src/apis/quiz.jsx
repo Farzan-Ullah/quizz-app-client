@@ -19,8 +19,8 @@ export const createQuiz = async (slides) => {
 export const getQuizDetails = async (quizId) => {
   try {
     const reqUrl = `${backendUrl}/quiz/quizz/${quizId}`;
-    const token = localStorage.getItem("token");
-    axios.defaults.headers.common["Authorization"] = token;
+    // const token = localStorage.getItem("token");
+    // axios.defaults.headers.common["Authorization"] = token;
     const response = await axios.get(reqUrl);
     return response.data.quiz;
     // console.log("QuizId", response.data.quiz._id);
