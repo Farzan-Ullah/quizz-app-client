@@ -19,12 +19,39 @@ export const createQuiz = async (slides) => {
 export const getQuizDetails = async (quizId) => {
   try {
     const reqUrl = `${backendUrl}/quiz/quizz/${quizId}`;
-    // const token = localStorage.getItem("token");
-    // axios.defaults.headers.common["Authorization"] = token;
     const response = await axios.get(reqUrl);
     return response.data.quiz;
-    // console.log("QuizId", response.data.quiz._id);
   } catch (error) {
     console.error("Error fetching quiz:", error);
+  }
+};
+
+export const getQuizByUser = async (userId) => {
+  try {
+    const reqUrl = `${backendUrl}/quiz/quizz`;
+    const response = await axios.get(reqUrl, { userId });
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching quizzes:", error);
+  }
+};
+
+export const updateImpressions = async (quizId) => {
+  try {
+    const reqUrl = `${backendUrl}/quiz/update-impressions/${quizId}`;
+    const response = await axios.put(reqUrl);
+    return response.data;
+  } catch (error) {
+    console.error("Error updating impressions:", error);
+  }
+};
+
+export const getAllQuizzes = async () => {
+  try {
+    const reqUrl = `${backendUrl}/quiz/all`;
+    const response = await axios.get(reqUrl);
+    return response.data.quizzes;
+  } catch (error) {
+    console.error("Error fetching all quizzes:", error);
   }
 };

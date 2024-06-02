@@ -6,7 +6,7 @@ import QuizPublish from "./QuizPublish";
 import toast, { Toaster } from "react-hot-toast";
 import { useParams } from "react-router-dom";
 
-function QnAForm({ onBack }) {
+function QnAForm({ quizName, onBack }) {
   const { quizId } = useParams();
   const [slides, setSlides] = useState([
     {
@@ -162,6 +162,7 @@ function QnAForm({ onBack }) {
 
     try {
       const quiz = {
+        quizName,
         slides: slides.map((slide) => ({
           question: slide.question,
           options: slide.options,

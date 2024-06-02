@@ -1,28 +1,49 @@
 import React, { useEffect, useState } from "react";
 import styles from "./StatCard.module.css";
 import { getUserStats } from "../../apis/auth";
+import { getAllQuizzes } from "../../apis/quiz";
 
-function StatCard() {
-  const [stats, setStats] = useState({ quizCreated: 0, questionsCreated: 0 });
+function StatCard({ userId }) {
+  const [stats, setStats] = useState({
+    quizCreated: 0,
+    questionsCreated: 0,
+    totalImpressions: 0,
+  });
 
   useEffect(() => {
-    const fetchStats = async (userId) => {
-      const userStats = await getUserStats(userId);
-      setStats({
-        quizCreated: userStats.quizCreated,
-        questionsCreated: userStats.questionsCreated,
-      });
+    const fetchStats = async () => {
+      try {
+        // Fetch user-specific stats
+        const userStats = await getUserStats(userId);
+        setStats((prevStats) => ({
+          ...prevStats,
+          quizCreated: userStats.quizCreated,
+          questionsCreated: userStats.questionsCreated,
+        }));
+
+        // Fetch all quizzes to calculate total impressions
+        const allQuizzes = await getAllQuizzes();
+        const totalImpressions = allQuizzes.reduce(
+          (acc, quiz) => acc + quiz.totalImpressions,
+          0
+        );
+        setStats((prevStats) => ({
+          ...prevStats,
+          totalImpressions,
+        }));
+      } catch (error) {
+        console.error("Error fetching stats:", error);
+      }
     };
 
     fetchStats();
-  }, []);
+  }, [userId]);
 
   return (
     <>
-      {" "}
       <div className={styles.statCard}>
         <div className={`${styles.count} ${styles.firstCount}`}>
-          <span>{stats.quizCreated}</span> quiz created
+          <span>{stats.quizCreated}</span> quizzes created
         </div>
       </div>
       <div className={styles.statCard}>
@@ -32,7 +53,7 @@ function StatCard() {
       </div>
       <div className={styles.statCard}>
         <div className={`${styles.count} ${styles.thirdCount}`}>
-          <span>1.4k</span> Total Impressions
+          <span>{stats.totalImpressions}</span> Total Impressions
         </div>
       </div>
     </>

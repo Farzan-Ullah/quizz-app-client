@@ -77,17 +77,21 @@ function CreateQuizForm({ onClose }) {
             >
               Cancel
             </button>
-            <button type="submit" className={styles.continueButton} onClick={handleSubmit}>
+            <button
+              type="submit"
+              className={styles.continueButton}
+              onClick={handleSubmit}
+            >
               Continue
             </button>
           </div>
         </form>
       )}
       {showForm && quizType === "Q&A" && (
-        <QnAForm onBack={handleBack} onSubmit={onClose} />
+        <QnAForm quizName={quizName} onBack={handleBack} onSubmit={onClose} />
       )}
       {showForm && quizType === "Poll" && (
-        <PollForm onBack={handleBack} onSubmit={onClose} />
+        <PollForm quizName={quizName} onBack={handleBack} onSubmit={onClose} />
       )}
     </>
   );

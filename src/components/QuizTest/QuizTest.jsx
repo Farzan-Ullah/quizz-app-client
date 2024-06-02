@@ -1,18 +1,19 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import styles from "./QuizTest.module.css";
-import { getQuizDetails } from "../../apis/quiz";
+import { getQuizDetails, updateImpressions } from "../../apis/quiz";
 import Congrats from "./Congrats";
 import { useParams } from "react-router-dom";
 
 function QuizTest() {
   const [slides, setSlides] = useState([]);
   const [currentSlide, setCurrentSlide] = useState(0);
-  const [timer, setTimer] = useState(null);
   const [timeLeft, setTimeLeft] = useState(null);
   const [quizEnded, setQuizEnded] = useState(false);
   const [score, setScore] = useState(0);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const timerRef = useRef(null);
+  const isImpressionUpdated = useRef(false);
 
   const { quizId } = useParams();
 
@@ -33,44 +34,61 @@ function QuizTest() {
     };
 
     fetchSlides();
+
+    const updateQuizImpressions = async () => {
+      try {
+        if (!isImpressionUpdated.current) {
+          await updateImpressions(quizId);
+          isImpressionUpdated.current = true;
+        }
+      } catch (error) {
+        console.error("Error updating impressions:", error);
+      }
+    };
+    updateQuizImpressions();
+    return () => {
+      isImpressionUpdated.current = true;
+    };
   }, [quizId]);
 
   useEffect(() => {
-    if (timer) {
-      clearInterval(timer);
+    if (timerRef.current) {
+      clearInterval(timerRef.current);
     }
 
-    if (slides && slides.length > 0 && slides[currentSlide]) {
-      if (slides[currentSlide].timer !== "OFF") {
-        const duration = parseInt(slides[currentSlide].timer.split(" ")[0], 10);
-        setTimeLeft(duration);
-        setTimer(
-          setInterval(() => {
-            setTimeLeft((prevTime) => {
-              if (prevTime > 0) {
-                return prevTime - 1;
-              } else {
-                clearInterval(timer);
-                handleNextSlide();
-                return 0;
-              }
-            });
-          }, 1000)
-        );
-      } else {
-        setTimeLeft(null);
-      }
+    if (
+      slides.length > 0 &&
+      slides[currentSlide] &&
+      slides[currentSlide].timer !== "OFF"
+    ) {
+      const duration = parseInt(slides[currentSlide].timer.split(" ")[0], 10);
+      setTimeLeft(duration);
+      timerRef.current = setInterval(() => {
+        setTimeLeft((prevTime) => {
+          if (prevTime > 0) {
+            return prevTime - 1;
+          } else {
+            clearInterval(timerRef.current);
+            handleNextSlide();
+            return 0;
+          }
+        });
+      }, 1000);
+    } else {
+      setTimeLeft(null);
     }
 
     return () => {
-      if (timer) {
-        clearInterval(timer);
+      if (timerRef.current) {
+        clearInterval(timerRef.current);
       }
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentSlide, slides]);
 
   const handleNextSlide = () => {
+    if (timerRef.current) {
+      clearInterval(timerRef.current);
+    }
     if (currentSlide < slides.length - 1) {
       setCurrentSlide(currentSlide + 1);
     } else {
@@ -79,16 +97,22 @@ function QuizTest() {
   };
 
   const handleQuizEnd = () => {
-    // Calculate score
     let calculatedScore = 0;
-    slides.forEach((slide, index) => {
-      // Assume selectedAnswer is the selected option index stored in the state
+    slides.forEach((slide) => {
       if (slide.selectedAnswer === slide.correctAnswer) {
         calculatedScore += 1;
       }
     });
     setScore(calculatedScore);
     setQuizEnded(true);
+  };
+
+  const handleOptionClick = (index) => {
+    setSlides((prevSlides) => {
+      const newSlides = [...prevSlides];
+      newSlides[currentSlide].selectedAnswer = index;
+      return newSlides;
+    });
   };
 
   if (loading) {
@@ -116,7 +140,11 @@ function QuizTest() {
       <div className={styles.header}>
         <span>{`0${currentSlide + 1}/${`0${slides.length}`.slice(-2)}`}</span>
         {slides[currentSlide] && slides[currentSlide].timer !== "OFF" && (
-          <span className={styles.timer}>{timeLeft}s</span>
+          <span className={styles.timer}>
+            {timeLeft !== null
+              ? `00:${timeLeft < 10 ? `0${timeLeft}` : timeLeft}s`
+              : ""}
+          </span>
         )}
       </div>
       <div className={styles.question}>
@@ -128,17 +156,11 @@ function QuizTest() {
             <button
               key={index}
               className={`${styles.option} ${
-                slides[currentSlide].correctAnswer === index
-                  ? styles.correctOption
+                slides[currentSlide].selectedAnswer === index
+                  ? styles.selectedOption
                   : ""
               }`}
-              onClick={() =>
-                setSlides((prevSlides) => {
-                  const newSlides = [...prevSlides];
-                  newSlides[currentSlide].selectedAnswer = index;
-                  return newSlides;
-                })
-              }
+              onClick={() => handleOptionClick(index)}
             >
               {slides[currentSlide].optionType === "text" && option.text}
               {slides[currentSlide].optionType === "image" && (
