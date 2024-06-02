@@ -83,6 +83,7 @@ function QuizTest() {
         clearInterval(timerRef.current);
       }
     };
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentSlide, slides]);
 
   const handleNextSlide = () => {
