@@ -1,0 +1,57 @@
+.container {
+    padding: 20px;
+    width: 70vw;
+}
+
+.container h2 {
+    text-align: left;
+    margin-bottom: 0;
+}
+
+.questionContainer {
+    margin-bottom: 20px;
+    font-size: 20px;
+    font-weight: 500;
+}
+
+.headerDetails {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    margin-bottom: 20px;
+    position: relative;
+    bottom: 8rem;
+    text-align: left;
+    color: #FF5D01;
+    font-size: 18px;
+    font-weight: 600;
+}
+
+.date {
+    margin-bottom: 0;
+}
+
+.imp {
+    margin-top: 0;
+}
+
+.stats {
+    display: flex;
+    justify-content: space-between;
+}
+
+.statBox {
+    background: #f9f9f9;
+    padding: 10px;
+    text-align: center;
+    width: 30%;
+}
+
+.statBox p:first-child {
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.statBox p:last-child {
+    color: #888;
+}

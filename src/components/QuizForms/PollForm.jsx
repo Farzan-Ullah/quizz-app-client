@@ -1,12 +1,12 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styles from "./PollForm.module.css";
 import { RiDeleteBin6Fill } from "react-icons/ri";
-import { createQuiz, getQuizDetails } from "../../apis/quiz";
+import { createQuiz, getQuizDetails, updateQuiz } from "../../apis/quiz";
 import QuizPublish from "./QuizPublish";
 import toast, { Toaster } from "react-hot-toast";
 import { useParams } from "react-router-dom";
 
-function PollForm({ onBack, onSubmit }) {
+function PollForm({ quizName, onBack, isEditMode }) {
   const { quizId } = useParams();
   const [slides, setSlides] = useState([
     {
@@ -21,6 +21,21 @@ function PollForm({ onBack, onSubmit }) {
   ]);
   const [currentSlide, setCurrentSlide] = useState(0);
   const [isModalOpen, setIsModalOpen] = useState(false);
+
+  useEffect(() => {
+    if (isEditMode && quizId) {
+      async function fetchQuizDetails() {
+        try {
+          const quiz = await getQuizDetails(quizId);
+          setSlides(quiz.slides);
+          setCurrentSlide(0);
+        } catch (error) {
+          console.error("Error fetching quiz details:", error);
+        }
+      }
+      fetchQuizDetails();
+    }
+  }, [isEditMode, quizId]);
 
   const handleOptionChange = (slideIndex, optionIndex, value, type) => {
     const newSlides = slides.map((slide, index) => {
@@ -136,6 +151,7 @@ function PollForm({ onBack, onSubmit }) {
     }
     try {
       const quiz = {
+        quizName,
         slides: slides.map((slide) => ({
           question: slide.question,
           options: slide.options,
@@ -143,15 +159,15 @@ function PollForm({ onBack, onSubmit }) {
         })),
       };
 
-      await createQuiz(quiz);
-
-      console.log("poll created", quiz);
-      toast.success("Quiz created successfully!");
-      setIsModalOpen(true);
-      const res = await getQuizDetails(localStorage.getItem("createdQuizId"));
-      console.log(res);
-
-      // Assuming onSubmit is a callback passed to the component
+      if (isEditMode && quizId) {
+        await updateQuiz(quizId, quiz);
+        toast.success("Quiz updated successfully!");
+      } else {
+        await createQuiz(quiz);
+        toast.success("Quiz created successfully!");
+        setIsModalOpen(true);
+        await getQuizDetails(localStorage.getItem("createdQuizId"));
+      }
     } catch (error) {
       console.error("Error creating quiz:", error);
     }

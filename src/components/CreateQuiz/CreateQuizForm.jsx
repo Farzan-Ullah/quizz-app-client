@@ -3,10 +3,18 @@ import styles from "../CreateQuiz/CreateQuizForm.module.css";
 import QnAForm from "../QuizForms/QnAForm";
 import PollForm from "../QuizForms/PollForm";
 
-function CreateQuizForm({ onClose }) {
+function CreateQuizForm({ onClose, quizToEdit, isEditMode }) {
   const [quizName, setQuizName] = useState("");
   const [quizType, setQuizType] = useState("");
   const [showForm, setShowForm] = useState(false);
+
+  useEffect(() => {
+    if (isEditMode && quizToEdit) {
+      setQuizName(quizToEdit.quizName);
+      setQuizType(quizToEdit.quizType);
+      setShowForm(true);
+    }
+  }, [isEditMode, quizToEdit]);
 
   useEffect(() => {
     localStorage.setItem("quizName", quizName);
@@ -34,7 +42,7 @@ function CreateQuizForm({ onClose }) {
 
   return (
     <>
-      {!showForm && (
+      {!showForm && !isEditMode && (
         <form className={styles.form}>
           <div className={styles.formGroup}>
             <input
@@ -88,10 +96,22 @@ function CreateQuizForm({ onClose }) {
         </form>
       )}
       {showForm && quizType === "Q&A" && (
-        <QnAForm quizName={quizName} onBack={handleBack} onSubmit={onClose} />
+        <QnAForm
+          quizName={quizName}
+          onBack={handleBack}
+          onSubmit={onClose}
+          quizId={quizToEdit ? quizToEdit._id : null}
+          isEditMode={isEditMode}
+        />
       )}
       {showForm && quizType === "Poll" && (
-        <PollForm quizName={quizName} onBack={handleBack} onSubmit={onClose} />
+        <PollForm
+          quizName={quizName}
+          onBack={handleBack}
+          onSubmit={onClose}
+          quizId={quizToEdit ? quizToEdit._id : null}
+          isEditMode={isEditMode}
+        />
       )}
     </>
   );

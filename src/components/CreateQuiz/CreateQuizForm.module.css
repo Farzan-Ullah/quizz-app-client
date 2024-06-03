@@ -35,39 +35,21 @@
 
 }
 
-/* .formGroup input {
-    width: 92%;
-    padding: 15px 10px;
-    border: none;
-    border-radius: 7px;
-    background: #fff;
-    box-shadow: 2px 1px 12px 3px rgba(0, 0, 0, 0.1);
-    line-height: 20px;  
-}
-
-
-.formGroup input::placeholder {
-    color: #aaa;
-    font-size: 19px;
-    font-weight: 500;
-    opacity: 1;
-    line-height: 40px;
-} */
 
 .formGroup input {
     width: 92%;
     height: 50px;
-    /* Set a specific height */
+
     padding: 0 10px;
-    /* Adjust padding to align text */
+
     border: none;
     border-radius: 7px;
     background: #fff;
     box-shadow: 2px 1px 12px 3px rgba(0, 0, 0, 0.1);
     line-height: 50px;
-    /* Match this to the height of the input */
+
     font-size: 18px;
-    /* Ensure the font size matches the placeholder */
+
 }
 
 .formGroup input::placeholder {
@@ -76,7 +58,7 @@
     font-weight: 500;
     opacity: 1;
     line-height: 50px;
-    /* Match this to the height of the input */
+
 }
 
 

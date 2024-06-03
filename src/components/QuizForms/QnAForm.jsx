@@ -1,12 +1,12 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styles from "./QnAForm.module.css";
 import { RiDeleteBin6Fill } from "react-icons/ri";
-import { createQuiz, getQuizDetails } from "../../apis/quiz";
+import { createQuiz, getQuizDetails, updateQuiz } from "../../apis/quiz";
 import QuizPublish from "./QuizPublish";
 import toast, { Toaster } from "react-hot-toast";
 import { useParams } from "react-router-dom";
 
-function QnAForm({ quizName, onBack }) {
+function QnAForm({ quizName, onBack, isEditMode, slides: slidesData }) {
   const { quizId } = useParams();
   const [slides, setSlides] = useState([
     {
@@ -18,11 +18,26 @@ function QnAForm({ quizName, onBack }) {
       ],
       optionType: "text",
       timer: "OFF",
-      correctAnswer: null, // Added to track the correct answer
+      correctAnswer: null,
     },
   ]);
   const [currentSlide, setCurrentSlide] = useState(0);
   const [isModalOpen, setIsModalOpen] = useState(false);
+
+  useEffect(() => {
+    if (isEditMode && quizId) {
+      async function fetchQuizDetails() {
+        try {
+          const quiz = await getQuizDetails(quizId);
+          setSlides(quiz.slides);
+          setCurrentSlide(0);
+        } catch (error) {
+          console.error("Error fetching quiz details:", error);
+        }
+      }
+      fetchQuizDetails();
+    }
+  }, [isEditMode, quizId]);
 
   const handleOptionChange = (slideIndex, optionIndex, value, type) => {
     const newSlides = slides.map((slide, index) => {
@@ -87,7 +102,7 @@ function QnAForm({ quizName, onBack }) {
           ],
           optionType: "text",
           timer: "OFF",
-          correctAnswer: null, // Added to track the correct answer
+          correctAnswer: null,
         },
       ]);
       setCurrentSlide(slides.length);
@@ -172,10 +187,15 @@ function QnAForm({ quizName, onBack }) {
         })),
       };
 
-      await createQuiz(quiz);
-      toast.success("Quiz created successfully!");
-      setIsModalOpen(true);
-      await getQuizDetails(localStorage.getItem("createdQuizId"));
+      if (isEditMode && quizId) {
+        await updateQuiz(quizId, slides);
+        toast.success("Quiz updated successfully!");
+      } else {
+        await createQuiz(quiz);
+        toast.success("Quiz created successfully!");
+        setIsModalOpen(true);
+        await getQuizDetails(localStorage.getItem("createdQuizId"));
+      }
     } catch (error) {
       console.error("Error creating quiz:", error);
     }
@@ -426,7 +446,7 @@ function QnAForm({ quizName, onBack }) {
               className={styles.createButton}
               onClick={handleSubmit}
             >
-              Create Quiz
+              {isEditMode ? "Update Quiz" : "Create Quiz"}
             </button>
           </div>
         </form>

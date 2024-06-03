@@ -1,0 +1,126 @@
+.analyticsContainer {
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin-left: 5rem;
+}
+
+.analyticsContainer h2 {
+    text-align: center;
+    font-size: 50px;
+    font-weight: 600;
+    color: #5076FF;
+}
+
+.table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0 10px;
+    /* font-size: 18px; */
+
+}
+
+.table th,
+.table td {
+    border: none;
+    padding: 10px 50px;
+    text-align: center;
+    font-weight: 500;
+    font-size: 20px;
+}
+
+.table th {
+    background-color: #5076FF;
+    /* font-weight: 500; */
+    /* Dark blue background */
+    color: white;
+    /* White text */
+}
+
+
+
+.table th:first-child {
+    border-top-left-radius: 15px;
+    border-bottom-left-radius: 15px;
+    padding-left: 90px;
+}
+
+.table th:last-child {
+    border-top-right-radius: 15px;
+    border-bottom-right-radius: 15px;
+}
+
+.table tr:nth-child(even) {
+    background-color: #B3C4FF;
+    /* Light grey background for even rows */
+
+}
+
+
+.table tr:nth-child(odd) {
+    background-color: #EDEDED;
+    /* White background for odd rows */
+}
+
+.table tr:nth-child(odd) td:first-child {
+    padding-left: 90px;
+}
+
+.table tr:nth-child(odd) td:last-child {
+    padding-right: 120px;
+}
+
+.table tr:nth-child(even) td:first-child {
+    border-top-left-radius: 15px;
+    border-bottom-left-radius: 15px;
+    padding-left: 90px;
+
+}
+
+.table tr:nth-child(even) td:last-child {
+    border-top-right-radius: 15px;
+    border-bottom-right-radius: 15px;
+    padding-right: 120px;
+}
+
+.table tr:hover td {
+    background-color: #d0e4f5;
+    /* Light blue hover effect */
+}
+
+.buttonContainer {
+    display: flex;
+    gap: 10px;
+}
+
+.button {
+    cursor: pointer;
+    border: none;
+    background: none;
+}
+
+.editButton {
+    color: #854CFF;
+    font-size: 20px;
+}
+
+.deleteButton {
+    color: #D60000;
+    font-size: 20px;
+}
+
+.shareButton {
+    color: #60B84B;
+    font-size: 20px;
+}
+
+
+
+.link {
+    color: black;
+    font-weight: 500;
+    text-decoration: underline;
+    cursor: pointer;
+}

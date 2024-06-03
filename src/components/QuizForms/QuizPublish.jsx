@@ -1,10 +1,13 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 import styles from "./QuizPublish.module.css";
 import { ToastContainer, toast, Slide } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 // import { getQuizDetails } from "../../apis/quiz";
-function QuizPublish({ quizId, onClose }) {
+function QuizPublish({ onClose }) {
+  const navigate = useNavigate();
+
   const quizLink =
     window.location.origin +
     "/quiz-test/" +
@@ -28,10 +31,16 @@ function QuizPublish({ quizId, onClose }) {
     );
   }
 
+  const handleClose = () => {
+    onClose();
+    navigate("/dashboard");
+    window.location.reload();
+  };
+
   return (
     <div className={styles.modalOverlay}>
       <div className={styles.modal}>
-        <button className={styles.closeButton} onClick={onClose}>
+        <button className={styles.closeButton} onClick={handleClose}>
           &times;
         </button>
         <h2>Congrats your Quiz is Published!</h2>

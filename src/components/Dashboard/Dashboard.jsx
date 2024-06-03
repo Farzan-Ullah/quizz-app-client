@@ -1,22 +1,34 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import styles from "./Dashboard.module.css";
 import StatCard from "./StatCard";
 import QuizCard from "./QuizCard";
+import Analytics from "./Analytics";
 import Modal from "../CreateQuiz/Modal";
 import CreateQuizForm from "../CreateQuiz/CreateQuizForm";
+import { getAllQuizzes } from "../../apis/quiz";
 
 function Dashboard() {
   const navigate = useNavigate();
-
   const [activeSection, setActiveSection] = useState("Dashboard");
   const [isModalOpen, setModalOpen] = useState(false);
+  const [quizzes, setQuizzes] = useState([]);
 
-  const quizzes = Array(50).fill({
-    title: "Quiz 1",
-    createdOn: "04 Sep, 2023",
-    attempts: 667,
-  });
+  useEffect(() => {
+    async function fetchQuizzes() {
+      try {
+        const allQuizzes = await getAllQuizzes();
+
+        const filteredQuizzes = allQuizzes.filter(
+          (quiz) => quiz.totalImpressions > 10
+        );
+        setQuizzes(filteredQuizzes);
+      } catch (error) {
+        console.error("Error fetching quizzes:", error);
+      }
+    }
+    fetchQuizzes();
+  }, []);
 
   const handleLogout = () => {
     localStorage.removeItem("token");
@@ -24,11 +36,15 @@ function Dashboard() {
     navigate("/");
   };
 
+  const formatDate = (dateString) => {
+    const options = { day: "2-digit", month: "short", year: "numeric" };
+    return new Date(dateString).toLocaleDateString("en-GB", options);
+  };
+
   return (
     <div className={styles.container}>
       <div className={styles.sidebar}>
         <div className={styles.logo}>QUIZZIE</div>
-
         <div className={styles.navBtns}>
           <button
             className={`${styles.navBtn} ${
@@ -55,7 +71,6 @@ function Dashboard() {
             Create Quiz
           </button>
         </div>
-
         <div className={styles.logout} onClick={handleLogout}>
           LOGOUT
         </div>
@@ -70,16 +85,21 @@ function Dashboard() {
               <h2>Trending Quizzes</h2>
               <div className={styles.quizGrid}>
                 {quizzes.map((quiz, index) => (
-                  <QuizCard key={index} {...quiz} />
+                  <QuizCard
+                    key={index}
+                    title={quiz.quizName}
+                    createdOn={formatDate(quiz.createdAt)}
+                    attempts={quiz.totalImpressions}
+                  />
                 ))}
               </div>
             </div>
           </div>
         )}
         {activeSection === "Analytics" && (
-          <div>
-            {/* Replace this with your Analytics component/content */}
-            <h2>Analytics Content</h2>
+          <div className={styles.analyticsTable}>
+            
+            <Analytics quizzes={quizzes} formatDate={formatDate}/>
           </div>
         )}
       </div>

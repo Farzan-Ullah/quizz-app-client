@@ -2,51 +2,68 @@
     padding: 10px;
     border-radius: 8px;
     width: 250px;
-    height: 80px;
+    height: auto;
     text-align: center;
     background-color: #fff;
     display: flex;
     flex-direction: column;
-    justify-content: center;
-    padding-left: 10px;
+    justify-content: space-between;
+    align-items: flex-start;
+    box-sizing: border-box;
+    border: 1px solid #e0e0e0;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.titleAndIcon {
+    display: flex;
+    flex-direction: row-reverse;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    text-align: left;
+    width: 100%;
 }
 
 .quizTitle {
-    position: relative;
-    top: 10px;
     font-weight: 600;
-    margin-left: 2px;
-    text-align: left;
-    font-size: 31px;
-}
-
-/* .quizDetails {
-} */
-
-.createdOn {
-    position: relative;
-    top: 10px;
-    right: 12px;
-    font-size: 17px;
-    font-weight: 600;
-    margin-right: 5px;
-    color: #60B84B;
-    width: 100%;
+    margin-bottom: 10px;
+    font-size: 24px;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+    color: #333;
+    text-align: left;
+    width: 150px;
+
+}
+
+.createdOn {
+    font-size: 15px;
+    font-weight: 600;
+    color: #60b84b;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    margin-top: 8px;
+    margin-right: 50px;
+    text-align: right;
+
 }
 
 .attempts {
-    display: inline;
-    position: relative;
-    bottom: 50px;
-    left: 90px;
-    color: orange;
     display: flex;
-    justify-content: center;
     align-items: center;
     gap: 6px;
-    font-size: 19px;
+    font-size: 17px;
     font-weight: 600;
+    color: orange;
+    align-self: flex-start;
+
+}
+
+.icon {
+    font-size: 20px;
+
+    color: orange;
+
 }

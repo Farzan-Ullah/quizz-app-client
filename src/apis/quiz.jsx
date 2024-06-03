@@ -29,10 +29,32 @@ export const getQuizDetails = async (quizId) => {
 export const getQuizByUser = async (userId) => {
   try {
     const reqUrl = `${backendUrl}/quiz/quizz`;
-    const response = await axios.get(reqUrl, { userId });
+
+    const response = await axios.get(reqUrl);
+
     return response.data;
   } catch (error) {
     console.error("Error fetching quizzes:", error);
+  }
+};
+
+export const updateQuiz = async (quizId, slides) => {
+  try {
+    const reqUrl = `${backendUrl}/quiz/update/${quizId}`;
+    const response = await axios.put(reqUrl, { slides });
+    return response.data;
+  } catch (error) {
+    console.error("Error updating quiz:", error);
+  }
+};
+
+export const deleteQuiz = async (quizId) => {
+  try {
+    const reqUrl = `${backendUrl}/quiz/delete-quiz/${quizId}`;
+    const response = await axios.delete(reqUrl);
+    return response.data;
+  } catch (error) {
+    console.error("Error deleting quiz:", error);
   }
 };
 
@@ -53,5 +75,20 @@ export const getAllQuizzes = async () => {
     return response.data.quizzes;
   } catch (error) {
     console.error("Error fetching all quizzes:", error);
+  }
+};
+
+export const updateQuizStatistics = async (quizId, slideIndex, isCorrect) => {
+  try {
+    const reqUrl = `${backendUrl}/quiz/updateQuizStatistics`;
+    const response = await axios.post(reqUrl, {
+      quizId,
+      slideIndex,
+      isCorrect,
+    });
+    return response.data;
+  } catch (error) {
+    console.error("Error updating quiz statistics:", error);
+    throw error;
   }
 };

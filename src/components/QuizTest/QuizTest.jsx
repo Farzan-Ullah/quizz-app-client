@@ -1,6 +1,10 @@
 import React, { useState, useEffect, useRef } from "react";
 import styles from "./QuizTest.module.css";
-import { getQuizDetails, updateImpressions } from "../../apis/quiz";
+import {
+  getQuizDetails,
+  updateImpressions,
+  updateQuizStatistics,
+} from "../../apis/quiz";
 import Congrats from "./Congrats";
 import { useParams } from "react-router-dom";
 
@@ -12,8 +16,10 @@ function QuizTest() {
   const [score, setScore] = useState(0);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [selectedOption, setSelectedOption] = useState(null);
   const timerRef = useRef(null);
   const isImpressionUpdated = useRef(false);
+  const optionRefs = useRef([]);
 
   const { quizId } = useParams();
 
@@ -22,7 +28,11 @@ function QuizTest() {
       try {
         const data = await getQuizDetails(quizId);
         if (data && data.slides) {
-          setSlides(data.slides);
+          const slidesWithAnswers = data.slides.map((slide) => ({
+            ...slide,
+            selectedAnswer: null,
+          }));
+          setSlides(slidesWithAnswers);
         } else {
           throw new Error("Quiz data is not valid");
         }
@@ -83,37 +93,58 @@ function QuizTest() {
         clearInterval(timerRef.current);
       }
     };
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentSlide, slides]);
 
-  const handleNextSlide = () => {
+  const handleNextSlide = async () => {
     if (timerRef.current) {
       clearInterval(timerRef.current);
     }
+    const isCorrect = selectedOption === slides[currentSlide].correctAnswer;
+    await updateQuizStatistics(quizId, currentSlide, isCorrect);
+
+    setSlides((prevSlides) => {
+      const newSlides = [...prevSlides];
+      if (selectedOption !== null) {
+        newSlides[currentSlide].selectedAnswer = selectedOption;
+      }
+      return newSlides;
+    });
+
+    setSelectedOption(null);
+
+    
+    if (optionRefs.current[currentSlide]) {
+      optionRefs.current[currentSlide].forEach((ref) => ref?.blur());
+    }
+
     if (currentSlide < slides.length - 1) {
       setCurrentSlide(currentSlide + 1);
     } else {
       handleQuizEnd();
     }
   };
-
   const handleQuizEnd = () => {
-    let calculatedScore = 0;
-    slides.forEach((slide) => {
-      if (slide.selectedAnswer === slide.correctAnswer) {
-        calculatedScore += 1;
+   
+    setSlides((prevSlides) => {
+      const newSlides = [...prevSlides];
+      if (selectedOption !== null) {
+        newSlides[currentSlide].selectedAnswer = selectedOption;
       }
+      let calculatedScore = 0;
+      newSlides.forEach((slide) => {
+        if (slide.selectedAnswer === slide.correctAnswer) {
+          calculatedScore += 1;
+        }
+      });
+      setScore(calculatedScore);
+      setQuizEnded(true);
+      return newSlides;
     });
-    setScore(calculatedScore);
-    setQuizEnded(true);
   };
 
   const handleOptionClick = (index) => {
-    setSlides((prevSlides) => {
-      const newSlides = [...prevSlides];
-      newSlides[currentSlide].selectedAnswer = index;
-      return newSlides;
-    });
+    setSelectedOption(index); 
   };
 
   if (loading) {
@@ -156,10 +187,14 @@ function QuizTest() {
           slides[currentSlide].options.map((option, index) => (
             <button
               key={index}
+              ref={(el) => {
+                if (!optionRefs.current[currentSlide]) {
+                  optionRefs.current[currentSlide] = [];
+                }
+                optionRefs.current[currentSlide][index] = el;
+              }}
               className={`${styles.option} ${
-                slides[currentSlide].selectedAnswer === index
-                  ? styles.selectedOption
-                  : ""
+                selectedOption === index ? styles.selectedOption : ""
               }`}
               onClick={() => handleOptionClick(index)}
             >

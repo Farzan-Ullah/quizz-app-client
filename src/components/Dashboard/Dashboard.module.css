@@ -78,7 +78,10 @@
     align-items: center;
     justify-content: center;
     margin-top: 140px;
+    margin-left: 10rem;
     gap: 5rem;
+    position: relative;
+    right: 20px;
 }
 
 .trendingQuizzes {

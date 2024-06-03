@@ -1,0 +1,52 @@
+.formContainer {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+
+.title {
+    position: relative;
+    left: 7rem;
+    bottom: 2rem;
+    color: #474444;
+    font-size: 40px;
+    font-weight: 600;
+    margin-bottom: 10px;
+    width: 70%;
+    text-align: center;
+}
+
+.buttonContainer {
+    display: flex;
+    justify-content: space-around;
+    margin-top: 20px;
+    position: relative;
+    gap: 40px;
+}
+
+
+.deleteButton {
+    background-color: #FF4B4B;
+    color: #fff;
+    padding: 13px 70px;
+    border: none;
+    cursor: pointer;
+    border-radius: 10px;
+    letter-spacing: 1px;
+}
+
+.cancelButton {
+    padding: 13px 110px;
+    border: none;
+    border-radius: 10px;
+    background: #fff;
+    box-shadow: 2px 1px 12px 3px rgba(0, 0, 0, 0.2);
+    cursor: pointer;
+}
+
+.deleteButton,
+.cancelButton {
+    font-size: 15px;
+    font-weight: 600;
+}

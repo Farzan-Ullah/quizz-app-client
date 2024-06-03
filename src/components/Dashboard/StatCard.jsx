@@ -2,8 +2,25 @@ import React, { useEffect, useState } from "react";
 import styles from "./StatCard.module.css";
 import { getUserStats } from "../../apis/auth";
 import { getAllQuizzes } from "../../apis/quiz";
+// import { getQuizByUser } from "../../apis/quiz";
 
 function StatCard({ userId }) {
+  const formatNumber = (number) => {
+    if (number < 1000) return number;
+    const suffixes = ["", "k", "M", "B", "T"];
+    const suffixIndex = Math.floor(("" + number).length / 3);
+    let shortNumber = parseFloat(
+      (suffixIndex !== 0
+        ? number / Math.pow(1000, suffixIndex)
+        : number
+      ).toPrecision(2)
+    );
+    if (shortNumber % 1 !== 0) {
+      shortNumber = shortNumber.toFixed(1);
+    }
+    return shortNumber + suffixes[suffixIndex];
+  };
+
   const [stats, setStats] = useState({
     quizCreated: 0,
     questionsCreated: 0,
@@ -13,7 +30,6 @@ function StatCard({ userId }) {
   useEffect(() => {
     const fetchStats = async () => {
       try {
-        // Fetch user-specific stats
         const userStats = await getUserStats(userId);
         setStats((prevStats) => ({
           ...prevStats,
@@ -21,7 +37,6 @@ function StatCard({ userId }) {
           questionsCreated: userStats.questionsCreated,
         }));
 
-        // Fetch all quizzes to calculate total impressions
         const allQuizzes = await getAllQuizzes();
         const totalImpressions = allQuizzes.reduce(
           (acc, quiz) => acc + quiz.totalImpressions,
@@ -53,7 +68,7 @@ function StatCard({ userId }) {
       </div>
       <div className={styles.statCard}>
         <div className={`${styles.count} ${styles.thirdCount}`}>
-          <span>{stats.totalImpressions}</span> Total Impressions
+          <span>{formatNumber(stats.totalImpressions)}</span> Total Impressions
         </div>
       </div>
     </>
