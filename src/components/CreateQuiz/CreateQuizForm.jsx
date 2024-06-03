@@ -31,13 +31,13 @@ function CreateQuizForm({ onClose, quizToEdit, isEditMode }) {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (quizName.trim() === "" || quizType === "") {
-      return; // Do nothing if quizName is empty or quizType is not selected
+      return;
     }
-    setShowForm(true); // Show the respective form when the continue button is clicked
+    setShowForm(true);
   };
 
   const handleBack = () => {
-    setShowForm(false); // Go back to the initial form
+    setShowForm(false);
   };
 
   return (
@@ -60,9 +60,9 @@ function CreateQuizForm({ onClose, quizToEdit, isEditMode }) {
               <button
                 type="button"
                 className={`${styles.quizTypeButton} ${
-                  quizType === "Q&A" ? styles.active : ""
+                  quizType === "QnA" ? styles.active : ""
                 }`}
-                onClick={() => handleQuizTypeChange("Q&A")}
+                onClick={() => handleQuizTypeChange("QnA")}
               >
                 Q & A
               </button>
@@ -95,7 +95,7 @@ function CreateQuizForm({ onClose, quizToEdit, isEditMode }) {
           </div>
         </form>
       )}
-      {showForm && quizType === "Q&A" && (
+      {showForm && quizType === "QnA" && (
         <QnAForm
           quizName={quizName}
           onBack={handleBack}

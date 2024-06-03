@@ -19,7 +19,6 @@ function Analytics({ formatDate, slidesData }) {
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [editQuiz, setEditQuiz] = useState(null);
   const [selectedQuiz, setSelectedQuiz] = useState(null);
- 
 
   useEffect(() => {
     async function fetchAllQuizzes() {
@@ -36,8 +35,8 @@ function Analytics({ formatDate, slidesData }) {
   const handleDeleteQuiz = async (quizId) => {
     try {
       const response = await deleteQuiz(quizId);
-      console.log(response); 
-   
+      console.log(response);
+
       const quizzes = await getAllQuizzes();
       setAllQuizzes(quizzes);
       closeModal();

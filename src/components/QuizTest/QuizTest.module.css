@@ -48,6 +48,14 @@
     margin-bottom: 20px;
 }
 
+.option img {
+
+    /* width: 100%;
+    height: 100%; */
+    object-fit: contain;
+    width: 120px;
+}
+
 .option {
     background: #f0f0f0;
     border: 2px solid transparent;
