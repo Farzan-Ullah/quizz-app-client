@@ -1,11 +1,9 @@
 import React, { useState } from "react";
-// import { useNavigate } from "react-router-dom";
 import { registerUser } from "../../apis/auth";
 import styles from "./RegisterUser.module.css";
 import toast, { Toaster } from "react-hot-toast";
 
 export default function RegisterUser({ onSuccess }) {
-  // const navigate = useNavigate();
   const [formData, setFormData] = useState({
     username: "",
     email: "",
@@ -23,7 +21,6 @@ export default function RegisterUser({ onSuccess }) {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const { username, email, password, confirmPassword } = formData;
-    // Validation
     const errors = validateForm(username, email, password, confirmPassword);
     if (Object.keys(errors).length > 0) {
       setErrors(errors);
@@ -34,7 +31,6 @@ export default function RegisterUser({ onSuccess }) {
       if (response) {
         toast.success("User registered successfully");
         onSuccess();
-        // navigate("/login");
       } else {
         toast.error("User already registered");
       }
@@ -115,7 +111,7 @@ export default function RegisterUser({ onSuccess }) {
           />
         </div>
         <button className={styles.formBtn} type="submit" onClick={handleSubmit}>
-          Register
+          Sign-Up
         </button>
       </form>
       <Toaster />

@@ -20,7 +20,7 @@ function ProfilePage() {
             }`}
             onClick={() => setShowRegister(true)}
           >
-            Register
+            Sign Up
           </button>
           <button
             className={`${styles.profileBtn} ${
