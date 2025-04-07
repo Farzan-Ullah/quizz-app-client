@@ -20,7 +20,7 @@ function Dashboard() {
         const allQuizzes = await getAllQuizzes();
 
         const filteredQuizzes = allQuizzes.filter(
-          (quiz) => quiz.totalImpressions > 10
+          (quiz) => quiz.totalImpressions < 10
         );
         setQuizzes(filteredQuizzes);
       } catch (error) {
